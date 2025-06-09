@@ -1,0 +1,4 @@
+[2024-09-01T18:26:03.766+0000] {processor.py:161} INFO - Started process (PID=160) to work on /opt/airflow/dags/postgres_to_bigquery_dag.py
+[2024-09-01T18:26:03.919+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/postgres_to_bigquery_dag.py for tasks to queue
+[2024-09-01T18:26:03.953+0000] {logging_mixin.py:188} INFO - [2024-09-01T18:26:03.952+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/postgres_to_bigquery_dag.py
+[2024-09-01T18:26:35.329+0000] {logging_mixin.py:188} INFO - [2024-09-01T18:26:35.328+0000] {timeout.py:68} ERROR - Process timed out, PID: 160

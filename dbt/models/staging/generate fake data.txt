@@ -1,0 +1,205 @@
+import psycopg2
+from faker import Faker
+import random
+import os
+import logging
+from dotenv import load_dotenv
+from datetime import datetime, timezone
+import argparse
+from typing import Any, Tuple
+
+load_dotenv()
+
+# Configure logging to use UTC time
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+    handlers=[logging.StreamHandler()],
+)
+logging.Formatter.converter = lambda *args: datetime.now(tz=timezone.utc).timetuple()
+
+DEMO_DATABASE = os.getenv("DEMO_DATABASE")
+DEMO_SCHEMA = os.getenv("DEMO_SCHEMA")
+POSTGRES_HOST = os.getenv("POSTGRES_HOST")
+POSTGRES_PORT = os.getenv("POSTGRES_PORT")
+POSTGRES_USER = os.getenv("POSTGRES_USER")
+POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD")
+
+# PostgreSQL connection parameters
+connection_params = {
+    "dbname": DEMO_DATABASE,
+    "user": POSTGRES_USER,
+    "password": POSTGRES_PASSWORD,
+    "host": POSTGRES_HOST,
+    "port": POSTGRES_PORT,
+}
+
+# Initialize Faker to generate random user data
+faker = Faker()
+
+
+def connect_to_postgres() -> Tuple[psycopg2.extensions.connection, psycopg2.extensions.cursor]:
+    """
+    Establish a connection to the PostgreSQL database and return the connection and cursor.
+    """
+    conn = psycopg2.connect(**connection_params)
+    cur = conn.cursor()
+    logging.info("Connected to PostgreSQL.")
+    return conn, cur
+
+
+def close_postgres_connection(
+    conn: psycopg2.extensions.connection,
+    cur: psycopg2.extensions.cursor,
+) -> None:
+    """
+    Close the connection to the PostgreSQL database.
+    """
+    cur.close()
+    conn.close()
+    logging.info("Closed the PostgreSQL connection.")
+
+
+def generate_user_data() -> Tuple[str, str, str, Any, str, str, datetime, datetime]:
+    """
+    Generate random user data.
+    """
+    now = datetime.now(tz=timezone.utc)
+    return (
+        faker.first_name(),
+        faker.last_name(),
+        faker.email(),
+        faker.date_time_this_decade(),
+        faker.address(),
+        faker.phone_number(),
+        now,
+        now
+    )
+
+
+def update_user_data(
+    cur: psycopg2.extensions.cursor, user_id: int
+) -> None:
+    """
+    Update random user data for a given user_id.
+    """
+    update_address = random.random() < 0.70
+    update_phone_number = random.random() < 0.55
+    address = faker.address() if update_address else None
+    phone_number = faker.phone_number() if update_phone_number else None
+    updated_at = datetime.now(tz=timezone.utc)
+
+    if update_address and update_phone_number:
+        cur.execute(
+            f"""
+            UPDATE {DEMO_SCHEMA}.merchants SET address = %s, phone_number = %s, updated_at = %s WHERE user_id = %s
+            """,
+            (address, phone_number, updated_at, user_id),
+        )
+        logging.info(
+            f"Updated merchant {user_id}: set address to {address} and phone_number to {phone_number}."
+        )
+    elif update_address:
+        cur.execute(
+            f"""
+            UPDATE {DEMO_SCHEMA}.merchants SET address = %s, updated_at = %s WHERE user_id = %s
+            """,
+            (address, updated_at, user_id),
+        )
+        logging.info(f"Updated merchant {user_id}: set address to {address}.")
+    elif update_phone_number:
+        cur.execute(
+            f"""
+            UPDATE {DEMO_SCHEMA}.merchants SET phone_number = %s, updated_at = %s WHERE user_id = %s
+            """,
+            (phone_number, updated_at, user_id),
+        )
+        logging.info(f"Updated merchant {user_id}: set phone_number to {phone_number}.")
+    else:
+        logging.info(f"No updates were made for user {user_id}.")
+
+
+def main():
+    parser = argparse.ArgumentParser(description="PostgreSQL user data generator and updater.")
+    parser.add_argument("--action", choices=["insert", "update"], required=True, help="Action to perform")
+    parser.add_argument("--user_id", type=int, help="User ID for update action")
+    parser.add_argument("--num_users", type=int, help="Number of users to insert")
+    args = parser.parse_args()
+
+    conn, cur = connect_to_postgres()
+
+    if args.action == "insert":
+        if not args.num_users:
+            logging.error("Number of users must be provided for insert action")
+        else:
+            for _ in range(args.num_users):
+                first_name, last_name, email, date_time, address, phone_number, created_at, updated_at = generate_user_data()
+                # first_name, last_name, email, date_time, address, phone_number = generate_user_data()
+                cur.execute(
+                    f"""
+                    INSERT INTO {DEMO_SCHEMA}.merchants (first_name, last_name, email, date_time, address, phone_number, created_at, updated_at)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                    """,
+                    (first_name, last_name, email, date_time, address, phone_number, created_at, updated_at),
+                )
+            conn.commit()
+            logging.info(f"Inserted {args.num_users} users.")
+
+    elif args.action == "update":
+        if args.user_id:
+            update_user_data(cur, args.user_id)
+            print(f"Merchant with id: {args.user_id} updated successfully")
+            conn.commit()
+        else:
+            cur.execute(f"SELECT user_id FROM {DEMO_SCHEMA}.merchants ORDER BY RANDOM() LIMIT %s", (random.randint(10, 25),))
+            user_ids = cur.fetchall()
+            for user_id in user_ids:
+                update_user_data(cur, user_id[0])
+            conn.commit()
+            print(user_ids)
+
+    close_postgres_connection(conn, cur)
+
+
+if __name__ == "__main__":
+    main()
+:heart:
+1
+
+Pinned by 
+Ikenna Ughanze
+7:53
+env file:
+DEMO_DATABASE=alt_school_db 
+DEMO_SCHEMA =sellers
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5434
+POSTGRES_USER=alt_school_user
+POSTGRES_PASSWORD=secretPassw0rd
+Pinned by 
+Ikenna Ughanze
+7:53
+CREATE TABLE alt_school_db.sellers.merchants (
+    user_id SERIAL PRIMARY KEY,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    email VARCHAR(100) UNIQUE NOT NULL,
+    date_time TIMESTAMP WITH TIME ZONE,
+    address TEXT,
+    phone_number VARCHAR(100),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+7:54
+How to use the info:
+setup postgres with docker-compose like in the .env file shared
+run the DDL statment to create the table
+instal psycopg2 and python-dotenv
+run the script
+
+
+
+
+
+

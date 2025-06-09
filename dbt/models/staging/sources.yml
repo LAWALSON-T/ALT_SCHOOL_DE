@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: etl_dataset_source
+    database: my-etl-project-434409
+    schema: etl_dataset  # The name of your BigQuery or PostgreSQL database
+    tables:
+      - name: orders              # This should match the table name in your database
+        description: "Raw orders data"
+      - name: products            # Similarly, for any other tables you want to reference
+        description: "Raw products data"
+      - name: customers 
+        description: "Customers data" 
+      - name: order_items
+        description: "order_item data"
+

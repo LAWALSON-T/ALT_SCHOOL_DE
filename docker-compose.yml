@@ -1,0 +1,189 @@
+version: '3.8'
+
+x-airflow-common:
+  &airflow-common
+  image: ${AIRFLOW_IMAGE_NAME:-apache/airflow:2.9.3}
+  environment:
+    &airflow-common-env
+    AIRFLOW__CORE__EXECUTOR: LocalExecutor
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@airflow-postgres/airflow
+    AIRFLOW__CORE__FERNET_KEY: ''
+    AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
+    AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+    AIRFLOW__API__AUTH_BACKENDS: 'airflow.api.auth.backend.basic_auth,airflow.api.auth.backend.session'
+    AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK: 'true'
+    _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-}
+    # Add environment variables for your DAG
+    POSTGRES_USER: ${POSTGRES_USER}
+    POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    POSTGRES_DB: ${POSTGRES_DB}
+    POSTGRES_HOST: ${POSTGRES_HOST}
+    POSTGRES_PORT: ${POSTGRES_PORT}
+    GOOGLE_APPLICATION_CREDENTIALS: ${GOOGLE_APPLICATION_CREDENTIALS}
+    BQ_DATASET: ${BQ_DATASET}
+  volumes:
+    - ${AIRFLOW_PROJ_DIR:-.}/airflow/dags:/opt/airflow/dags
+    - ${AIRFLOW_PROJ_DIR:-.}/airflow/logs:/opt/airflow/logs
+    - ${AIRFLOW_PROJ_DIR:-.}/airflow/config:/opt/airflow/config
+    - ${AIRFLOW_PROJ_DIR:-.}/airflow/plugins:/opt/airflow/plugins
+    - ${AIRFLOW_PROJ_DIR:-.}/data:/opt/airflow/data
+  user: "${AIRFLOW_UID:-50000}:0"
+  depends_on:
+    &airflow-common-depends-on
+    airflow-postgres:
+      condition: service_healthy
+
+networks:
+  airflow_network:
+    driver: bridge
+
+services:
+  # Main PostgreSQL database for your data (matches POSTGRES_HOST in .env)
+  ingestion-postgres:
+    image: postgres:13
+    container_name: ingestion-postgres
+    networks:
+      - airflow_network
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - ingestion-postgres-data:/var/lib/postgresql/data
+      - ./data:/opt/airflow/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "${POSTGRES_PORT}:5432"  # Uses 5432 from .env
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}"]
+      interval: 10s
+      retries: 5
+      start_period: 5s
+    restart: always
+    command: ["postgres", "-c", "unix_socket_directories=/var/run/postgresql"]
+
+  # Separate PostgreSQL for Airflow metadata
+  airflow-postgres:
+    image: postgres:13
+    container_name: airflow-postgres
+    networks:
+      - airflow_network
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    volumes:
+      - airflow-postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"  # Different port to avoid conflict
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "airflow"]
+      interval: 10s
+      retries: 5
+      start_period: 5s
+    restart: always
+
+  airflow-webserver:
+    <<: *airflow-common
+    command: webserver
+    container_name: airflow-webserver
+    networks:
+      - airflow_network
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    restart: always
+    depends_on:
+      <<: *airflow-common-depends-on
+      airflow-init:
+        condition: service_completed_successfully
+      ingestion-postgres:
+        condition: service_healthy
+
+  airflow-scheduler:
+    <<: *airflow-common
+    command: scheduler
+    container_name: airflow-scheduler
+    networks:
+      - airflow_network
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8793/health"]  # Fixed port
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    restart: always
+    depends_on:
+      <<: *airflow-common-depends-on
+      airflow-init:
+        condition: service_completed_successfully
+      ingestion-postgres:
+        condition: service_healthy
+
+  airflow-triggerer:
+    <<: *airflow-common
+    command: triggerer
+    container_name: airflow-triggerer
+    networks:
+      - airflow_network
+    healthcheck:
+      test: ["CMD-SHELL", 'airflow jobs check --job-type TriggererJob --hostname "${HOSTNAME}"']
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    restart: always
+    depends_on:
+      <<: *airflow-common-depends-on
+      airflow-init:
+        condition: service_completed_successfully
+
+  airflow-init:
+    <<: *airflow-common
+    entrypoint: /bin/bash
+    container_name: airflow-init
+    command:
+      - -c
+      - |
+        mkdir -p /sources/airflow/{logs,dags,plugins}
+        chown -R "${AIRFLOW_UID}:0" /sources/airflow/{logs,dags,plugins}
+        exec /entrypoint airflow version
+    networks:
+      - airflow_network
+    environment:
+      <<: *airflow-common-env
+      _AIRFLOW_DB_MIGRATE: 'true'
+      _AIRFLOW_WWW_USER_CREATE: 'true'
+      _AIRFLOW_WWW_USER_USERNAME: ${_AIRFLOW_WWW_USER_USERNAME:-admin}
+      _AIRFLOW_WWW_USER_PASSWORD: ${_AIRFLOW_WWW_USER_PASSWORD:-admin}
+      _PIP_ADDITIONAL_REQUIREMENTS: ''
+    user: "0:0"
+    volumes:
+      - ${AIRFLOW_PROJ_DIR:-.}:/sources
+
+  dbt:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dbt-runner
+    networks:
+      - airflow_network
+    volumes:
+      - ./dbt:/usr/app/dbt
+      - ./data/key:/opt/airflow/data/key  # Fixed path
+    working_dir: /usr/app/dbt
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: ${GOOGLE_APPLICATION_CREDENTIALS}
+    command: >
+      /bin/bash -c "dbt deps && dbt run"
+    depends_on:
+      - ingestion-postgres
+
+volumes:
+  airflow-postgres-data:
+  ingestion-postgres-data:

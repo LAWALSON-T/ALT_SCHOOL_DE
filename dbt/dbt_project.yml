@@ -1,0 +1,45 @@
+name: 'ecommerce_project'  # The name of your dbt project
+version: '1.0.0'  # Version of the project
+config-version: 2  # Should be 2 for dbt v1.x
+
+# Define your project's profile, which should match the profile name in profiles.yml
+profile: 'ecommerce_project'
+
+# Define the target environment
+target-path: 'target'  # Where dbt should put compiled files
+clean-targets:
+  - 'target'
+  - 'dbt_modules'
+
+# Define your dbt sources and their configurations
+sources:
+  # Source configuration for pulling data from PostgreSQL
+  etl_dataset_source:  # Removed the hyphen (-) for the source definition
+    database: etl_dataset  # Name of the database in PostgreSQL
+    schema: public  # Schema within the database
+    tables:
+      - name: orders  # Table name in PostgreSQL (for raw orders data)
+      - name: products  # Table name in PostgreSQL (for raw products data)
+      - name: customers  # Table name in PostgreSQL (for raw customers data)
+      - name: order_items  # Make sure to define the last table correctly
+
+# Define your dbt models and their configurations
+models:
+ +:
+    staging:
+      materialized: view  # or table, depending on your needs
+    intermediate:
+      materialized: table  # Use table for intermediate models
+    final:
+      materialized: table  # Use table for final models
+
+# Define any packages your project requires
+packages:
+  # Example package for dbt BigQuery adapter
+  - package: dbt-labs/dbt-bigquery
+    version: '1.8.2'
+
+# Define any dbt-specific configurations
+vars:
+  # Example variables
+  my_var: 'value'

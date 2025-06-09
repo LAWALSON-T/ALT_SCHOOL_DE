@@ -1,0 +1,25 @@
+packages:
+  - package: dbt-labs/dbt_utils
+    version: "1.3.0"  # or whatever version you need
+
+
+
+
+# packages:
+#   - package: dbt-labs/dbt-bigquery
+#     version: "*"
+#   - package: dbt-labs/dbt-postgres
+#     version: "*"
+#   - package: dbt-labs/dbt-redshift
+#     version: "*"
+#   - package: dbt-labs/dbt-snowflake
+#     version: "*"
+# packages:
+  # - package: dbt-labs/dbt-bigquery
+  #   version: "1.8.2"
+  # - package: dbt-labs/dbt-postgres
+  #   version: "1.8.2"
+  # - package: dbt-labs/redshift
+  #   version: "1.8.1"
+  # - package: dbt-labs/dbt-snowflake
+  #   version: "1.8.3"

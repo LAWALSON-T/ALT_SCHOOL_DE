@@ -1,0 +1,106 @@
+[2024-09-14T16:58:34.093+0000] {processor.py:161} INFO - Started process (PID=10009) to work on /opt/airflow/dags/postgres_to_bigquery_dag.py
+[2024-09-14T16:58:34.216+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/postgres_to_bigquery_dag.py for tasks to queue
+[2024-09-14T16:58:34.299+0000] {logging_mixin.py:188} INFO - [2024-09-14T16:58:34.298+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/postgres_to_bigquery_dag.py
+[2024-09-14T16:59:01.715+0000] {processor.py:840} INFO - DAG(s) 'postgres_to_bigquery' retrieved from /opt/airflow/dags/postgres_to_bigquery_dag.py
+[2024-09-14T16:59:01.954+0000] {logging_mixin.py:188} INFO - [2024-09-14T16:59:01.952+0000] {dag.py:3089} INFO - Sync 1 DAGs
+[2024-09-14T16:59:02.224+0000] {logging_mixin.py:188} INFO - [2024-09-14T16:59:02.223+0000] {dag.py:3947} INFO - Setting next_dagrun for postgres_to_bigquery to 2024-09-14 00:00:00+00:00, run_after=2024-09-15 00:00:00+00:00
+[2024-09-14T16:59:02.681+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/postgres_to_bigquery_dag.py took 28.707 seconds
+[2024-09-14T16:59:34.799+0000] {processor.py:161} INFO - Started process (PID=10066) to work on /opt/airflow/dags/postgres_to_bigquery_dag.py
+[2024-09-14T16:59:34.828+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/postgres_to_bigquery_dag.py for tasks to queue
+[2024-09-14T16:59:34.845+0000] {logging_mixin.py:188} INFO - [2024-09-14T16:59:34.844+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/postgres_to_bigquery_dag.py
+[2024-09-14T16:59:48.639+0000] {processor.py:840} INFO - DAG(s) 'postgres_to_bigquery' retrieved from /opt/airflow/dags/postgres_to_bigquery_dag.py
+[2024-09-14T16:59:48.869+0000] {logging_mixin.py:188} INFO - [2024-09-14T16:59:48.868+0000] {dag.py:3089} INFO - Sync 1 DAGs
+[2024-09-14T16:59:49.217+0000] {logging_mixin.py:188} INFO - [2024-09-14T16:59:49.217+0000] {dag.py:3947} INFO - Setting next_dagrun for postgres_to_bigquery to 2024-09-14 00:00:00+00:00, run_after=2024-09-15 00:00:00+00:00
+[2024-09-14T16:59:50.529+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/postgres_to_bigquery_dag.py took 15.780 seconds
+[2024-09-14T17:00:21.750+0000] {processor.py:161} INFO - Started process (PID=10093) to work on /opt/airflow/dags/postgres_to_bigquery_dag.py
+[2024-09-14T17:00:21.752+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/postgres_to_bigquery_dag.py for tasks to queue
+[2024-09-14T17:00:21.767+0000] {logging_mixin.py:188} INFO - [2024-09-14T17:00:21.766+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/postgres_to_bigquery_dag.py
+[2024-09-14T17:00:28.180+0000] {processor.py:840} INFO - DAG(s) 'postgres_to_bigquery' retrieved from /opt/airflow/dags/postgres_to_bigquery_dag.py
+[2024-09-14T17:00:28.538+0000] {logging_mixin.py:188} INFO - [2024-09-14T17:00:28.529+0000] {dag.py:3089} INFO - Sync 1 DAGs
+[2024-09-14T17:00:29.948+0000] {logging_mixin.py:188} INFO - [2024-09-14T17:00:29.948+0000] {dag.py:3947} INFO - Setting next_dagrun for postgres_to_bigquery to 2024-09-14 00:00:00+00:00, run_after=2024-09-15 00:00:00+00:00
+[2024-09-14T17:00:30.203+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/postgres_to_bigquery_dag.py took 8.499 seconds
+[2024-09-14T17:01:00.712+0000] {processor.py:161} INFO - Started process (PID=10111) to work on /opt/airflow/dags/postgres_to_bigquery_dag.py
+[2024-09-14T17:01:00.737+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/postgres_to_bigquery_dag.py for tasks to queue
+[2024-09-14T17:01:00.743+0000] {logging_mixin.py:188} INFO - [2024-09-14T17:01:00.741+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/postgres_to_bigquery_dag.py
+[2024-09-14T17:01:07.068+0000] {processor.py:840} INFO - DAG(s) 'postgres_to_bigquery' retrieved from /opt/airflow/dags/postgres_to_bigquery_dag.py
+[2024-09-14T17:01:07.267+0000] {logging_mixin.py:188} INFO - [2024-09-14T17:01:07.266+0000] {dag.py:3089} INFO - Sync 1 DAGs
+[2024-09-14T17:01:07.434+0000] {logging_mixin.py:188} INFO - [2024-09-14T17:01:07.433+0000] {dag.py:3947} INFO - Setting next_dagrun for postgres_to_bigquery to 2024-09-14 00:00:00+00:00, run_after=2024-09-15 00:00:00+00:00
+[2024-09-14T17:01:07.562+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/postgres_to_bigquery_dag.py took 6.872 seconds
+[2024-09-14T17:01:38.680+0000] {processor.py:161} INFO - Started process (PID=10129) to work on /opt/airflow/dags/postgres_to_bigquery_dag.py
+[2024-09-14T17:01:38.689+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/postgres_to_bigquery_dag.py for tasks to queue
+[2024-09-14T17:01:38.706+0000] {logging_mixin.py:188} INFO - [2024-09-14T17:01:38.705+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/postgres_to_bigquery_dag.py
+[2024-09-14T17:01:44.449+0000] {processor.py:840} INFO - DAG(s) 'postgres_to_bigquery' retrieved from /opt/airflow/dags/postgres_to_bigquery_dag.py
+[2024-09-14T17:01:44.757+0000] {logging_mixin.py:188} INFO - [2024-09-14T17:01:44.756+0000] {dag.py:3089} INFO - Sync 1 DAGs
+[2024-09-14T17:01:44.993+0000] {logging_mixin.py:188} INFO - [2024-09-14T17:01:44.993+0000] {dag.py:3947} INFO - Setting next_dagrun for postgres_to_bigquery to 2024-09-14 00:00:00+00:00, run_after=2024-09-15 00:00:00+00:00
+[2024-09-14T17:01:45.167+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/postgres_to_bigquery_dag.py took 6.512 seconds
+[2024-09-14T17:02:16.247+0000] {processor.py:161} INFO - Started process (PID=10152) to work on /opt/airflow/dags/postgres_to_bigquery_dag.py
+[2024-09-14T17:02:16.261+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/postgres_to_bigquery_dag.py for tasks to queue
+[2024-09-14T17:02:16.277+0000] {logging_mixin.py:188} INFO - [2024-09-14T17:02:16.266+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/postgres_to_bigquery_dag.py
+[2024-09-14T17:02:20.890+0000] {processor.py:840} INFO - DAG(s) 'postgres_to_bigquery' retrieved from /opt/airflow/dags/postgres_to_bigquery_dag.py
+[2024-09-14T17:02:21.088+0000] {logging_mixin.py:188} INFO - [2024-09-14T17:02:21.087+0000] {dag.py:3089} INFO - Sync 1 DAGs
+[2024-09-14T17:02:21.265+0000] {logging_mixin.py:188} INFO - [2024-09-14T17:02:21.265+0000] {dag.py:3947} INFO - Setting next_dagrun for postgres_to_bigquery to 2024-09-14 00:00:00+00:00, run_after=2024-09-15 00:00:00+00:00
+[2024-09-14T17:02:22.194+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/postgres_to_bigquery_dag.py took 5.991 seconds
+[2024-09-14T17:02:52.760+0000] {processor.py:161} INFO - Started process (PID=10170) to work on /opt/airflow/dags/postgres_to_bigquery_dag.py
+[2024-09-14T17:02:52.777+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/postgres_to_bigquery_dag.py for tasks to queue
+[2024-09-14T17:02:52.787+0000] {logging_mixin.py:188} INFO - [2024-09-14T17:02:52.781+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/postgres_to_bigquery_dag.py
+[2024-09-14T17:02:55.982+0000] {processor.py:840} INFO - DAG(s) 'postgres_to_bigquery' retrieved from /opt/airflow/dags/postgres_to_bigquery_dag.py
+[2024-09-14T17:02:56.199+0000] {logging_mixin.py:188} INFO - [2024-09-14T17:02:56.188+0000] {dag.py:3089} INFO - Sync 1 DAGs
+[2024-09-14T17:02:56.722+0000] {logging_mixin.py:188} INFO - [2024-09-14T17:02:56.721+0000] {dag.py:3947} INFO - Setting next_dagrun for postgres_to_bigquery to 2024-09-14 00:00:00+00:00, run_after=2024-09-15 00:00:00+00:00
+[2024-09-14T17:02:58.730+0000] {processor.py:186} ERROR - Got an exception! Propagating...
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1094, in _commit_impl
+    self.engine.dialect.do_commit(self.connection)
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 686, in do_commit
+    dbapi_connection.commit()
+psycopg2.OperationalError: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/dag_processing/processor.py", line 182, in _run_file_processor
+    _handle_dag_file_processing()
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/dag_processing/processor.py", line 163, in _handle_dag_file_processing
+    result: tuple[int, int] = dag_file_processor.process_file(
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/session.py", line 79, in wrapper
+    return func(*args, session=session, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/dag_processing/processor.py", line 859, in process_file
+    serialize_errors = DagFileProcessor.save_dag_to_db(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/api_internal/internal_api_call.py", line 115, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/session.py", line 79, in wrapper
+    return func(*args, session=session, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/dag_processing/processor.py", line 896, in save_dag_to_db
+    session.commit()
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 1454, in commit
+    self._transaction.commit(_to_root=self.future)
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 839, in commit
+    trans.commit()
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2469, in commit
+    self._do_commit()
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2659, in _do_commit
+    self._connection_commit_impl()
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2630, in _connection_commit_impl
+    self.connection._commit_impl()
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1096, in _commit_impl
+    self._handle_dbapi_exception(e, None, None, None, None)
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2134, in _handle_dbapi_exception
+    util.raise_(
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/util/compat.py", line 211, in raise_
+    raise exception
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1094, in _commit_impl
+    self.engine.dialect.do_commit(self.connection)
+  File "/home/airflow/.local/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 686, in do_commit
+    dbapi_connection.commit()
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+(Background on this error at: https://sqlalche.me/e/14/e3q8)

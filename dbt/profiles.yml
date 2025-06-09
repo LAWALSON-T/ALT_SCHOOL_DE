@@ -1,0 +1,13 @@
+ecommerce_project:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      method: service-account
+      project: 'my-etl-project-434409'
+      dataset: 'etl_dataset'
+      keyfile: '/opt/airflow/data/key/my-etl-project-434409-3e70c40f6d3a.json'
+      threads: 4
+      timeout_seconds: 300
+      location: 'US'
+      priority: 'interactive'
